@@ -47,6 +47,13 @@ export class GildedRose {
   }
 
   adjustQualityForItem(item: Item) {
+
+    // Conjured items degrade twice as fast after expiration
+    if (this.isConjuredItem(item)) {
+      this.decreaseQuality(item, 2);
+      return;
+    }
+
     switch (item.name) {
       case ItemName.AgedBrie:
         this.increaseQuality(item, 1);
@@ -61,6 +68,13 @@ export class GildedRose {
   }
 
   adjustQualityForExpiredItem(item: Item) {
+
+    // Conjured items degrade twice as fast after expiration
+    if (this.isConjuredItem(item)) {
+      this.decreaseQuality(item, 4);
+      return;
+    }
+
     switch (item.name) {
       case ItemName.AgedBrie: 
         this.increaseQuality(item, 1);
@@ -96,5 +110,9 @@ export class GildedRose {
     if (item.sellIn < 6) {
       this.increaseQuality(item, 1);
     }
+  }
+
+  private isConjuredItem(item: Item): boolean {
+    return item.name.startsWith('Conjured');
   }
 }
