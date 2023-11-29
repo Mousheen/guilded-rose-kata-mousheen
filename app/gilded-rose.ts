@@ -10,6 +10,14 @@ export class Item {
   }
 }
 
+// Seperate hardcoded values into enums, better readability, easier to refactor & error prevention.
+// Should be in a seperate file.
+enum ItemName {
+  AgedBrie = 'Aged Brie',
+  Sulfuras = 'Sulfuras, Hand of Ragnaros',
+  BackstagePasses = 'Backstage passes to a TAFKAL80ETC concert',
+}
+
 export class GildedRose {
   items: Array<Item>;
 
@@ -25,7 +33,7 @@ export class GildedRose {
   }
 
   updateItemQuality(item: Item) {
-    if (item.name === 'Sulfurus, Hand of Ragnaros') {
+    if (item.name ===  ItemName.Sulfuras) {
       return; // Sulfurus does not change
     }
 
@@ -40,10 +48,10 @@ export class GildedRose {
 
   adjustQualityForItem(item: Item) {
     switch (item.name) {
-      case 'Aged Brie':
+      case ItemName.AgedBrie:
         this.increaseQuality(item, 1);
         break;
-      case 'Backstage passes to a TAFKAL80ETC concert':
+      case ItemName.BackstagePasses:
         this.adjustBackstagePassQuality(item);
         break;
       default:
@@ -54,10 +62,10 @@ export class GildedRose {
 
   adjustQualityForExpiredItem(item: Item) {
     switch (item.name) {
-      case 'Aged Brie': 
+      case ItemName.AgedBrie: 
         this.increaseQuality(item, 1);
         break;
-      case 'Backstage passes to a TAFKAL80ETC concert':
+      case ItemName.BackstagePasses:
         item.quality = 0;
         break;
       default:
@@ -89,54 +97,4 @@ export class GildedRose {
       this.increaseQuality(item, 1);
     }
   }
-
-  // updateQuality() {
-  //   for (let i = 0; i < this.items.length; i++) {
-  //     if (this.items[i].name != 'Aged Brie' && this.items[i].name != 'Backstage passes to a TAFKAL80ETC concert') {
-  //       if (this.items[i].quality > 0) {
-  //         if (this.items[i].name != 'Sulfuras, Hand of Ragnaros') {
-  //           this.items[i].quality = this.items[i].quality - 1
-  //         }
-  //       }
-  //     } else {
-  //       if (this.items[i].quality < 50) {
-  //         this.items[i].quality = this.items[i].quality + 1
-  //         if (this.items[i].name == 'Backstage passes to a TAFKAL80ETC concert') {
-  //           if (this.items[i].sellIn < 11) {
-  //             if (this.items[i].quality < 50) {
-  //               this.items[i].quality = this.items[i].quality + 1
-  //             }
-  //           }
-  //           if (this.items[i].sellIn < 6) {
-  //             if (this.items[i].quality < 50) {
-  //               this.items[i].quality = this.items[i].quality + 1
-  //             }
-  //           }
-  //         }
-  //       }
-  //     }
-  //     if (this.items[i].name != 'Sulfuras, Hand of Ragnaros') {
-  //       this.items[i].sellIn = this.items[i].sellIn - 1;
-  //     }
-  //     if (this.items[i].sellIn < 0) {
-  //       if (this.items[i].name != 'Aged Brie') {
-  //         if (this.items[i].name != 'Backstage passes to a TAFKAL80ETC concert') {
-  //           if (this.items[i].quality > 0) {
-  //             if (this.items[i].name != 'Sulfuras, Hand of Ragnaros') {
-  //               this.items[i].quality = this.items[i].quality - 1
-  //             }
-  //           }
-  //         } else {
-  //           this.items[i].quality = this.items[i].quality - this.items[i].quality
-  //         }
-  //       } else {
-  //         if (this.items[i].quality < 50) {
-  //           this.items[i].quality = this.items[i].quality + 1
-  //         }
-  //       }
-  //     }
-  //   }
-
-  //   return this.items;
-  // }
 }
