@@ -1,22 +1,5 @@
-export class Item {
-  name: string;
-  sellIn: number;
-  quality: number;
-
-  constructor(name: string, sellIn: number, quality: number) {
-    this.name = name;
-    this.sellIn = sellIn;
-    this.quality = quality;
-  }
-}
-
-// Seperate hardcoded values into enums, better readability, easier to refactor & error prevention.
-// Should be in a seperate file.
-enum ItemName {
-  AgedBrie = 'Aged Brie',
-  Sulfuras = 'Sulfuras, Hand of Ragnaros',
-  BackstagePasses = 'Backstage passes to a TAFKAL80ETC concert',
-}
+import { Item } from "@/models/item";
+import { ItemName } from "@/models/itemName";
 
 export class GildedRose {
   items: Array<Item>;

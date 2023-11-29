@@ -1,9 +1,13 @@
-import { Item, GildedRose } from '@/gilded-rose';
+import { Item } from '@/models/item';
+import { ItemName } from '@/models/itemName';
+
+import { GildedRose } from '@/gilded-rose';
+
 
 describe('Gilded Rose', () => {
 
   it('should decrease the quality and sellIn values for normal items', () => {
-    const normalItem = new Item('normal item', 10, 20);
+    const normalItem = new Item(ItemName.NormalItem, 10, 20);
     const gildedRose = new GildedRose([normalItem]);
 
     gildedRose.updateQuality();
@@ -13,7 +17,7 @@ describe('Gilded Rose', () => {
   });
 
   it('should not decrease quality of normal items below 0', () => {
-    const normalItem = new Item('normal item', 10, 0);
+    const normalItem = new Item(ItemName.NormalItem, 10, 0);
     const gildedRose = new GildedRose([normalItem]);
 
     gildedRose.updateQuality();
@@ -22,8 +26,8 @@ describe('Gilded Rose', () => {
   });
 
   it('should degrade quality of normal and Conjured items correctly', () => {
-    const normalItem = new Item('normal item', 10, 20);
-    const conjuredItem = new Item('Conjured Mana Cake', 10, 20);
+    const normalItem = new Item(ItemName.NormalItem, 10, 20);
+    const conjuredItem = new Item(ItemName.ConjuredManaCake, 10, 20);
     const gildedRose = new GildedRose([normalItem, conjuredItem]);
 
     gildedRose.updateQuality();
@@ -33,7 +37,7 @@ describe('Gilded Rose', () => {
   });
 
   it('should degrade quality of Conjured items twice as fast after the sell by date', () => {
-    const conjuredItem = new Item('Conjured Mana Cake', 0, 20);
+    const conjuredItem = new Item(ItemName.ConjuredManaCake, 0, 20);
     const gildedRose = new GildedRose([conjuredItem]);
 
     gildedRose.updateQuality();
@@ -43,7 +47,7 @@ describe('Gilded Rose', () => {
 
   // Test for quality increase by 3 when there are 5 days or less
   it('should increase the quality of Backstage Passes by 3 when there are 5 days or less', () => {
-    const backstagePass = new Item('Backstage passes to a TAFKAL80ETC concert', 5, 20);
+    const backstagePass = new Item(ItemName.BackstagePasses, 5, 20);
     const gildedRose = new GildedRose([backstagePass]);
 
     gildedRose.updateQuality();
@@ -53,7 +57,7 @@ describe('Gilded Rose', () => {
 
   // Test for quality increase by 2 when there are 10 days or less
   it('should increase the quality of Backstage Passes by 2 when there are 10 days or less', () => {
-    const backstagePass = new Item('Backstage passes to a TAFKAL80ETC concert', 10, 20);
+    const backstagePass = new Item(ItemName.BackstagePasses, 10, 20);
     const gildedRose = new GildedRose([backstagePass]);
 
     gildedRose.updateQuality();
@@ -62,7 +66,7 @@ describe('Gilded Rose', () => {
   });
 
   it('should drop the quality of Backstage Passes to 0 after the concert', () => {
-    const backstagePass = new Item('Backstage passes to a TAFKAL80ETC concert', 0, 20);
+    const backstagePass = new Item(ItemName.BackstagePasses, 0, 20);
     const gildedRose = new GildedRose([backstagePass]);
 
     gildedRose.updateQuality();
@@ -71,7 +75,7 @@ describe('Gilded Rose', () => {
   });
 
   it('should increase the quality of Backstage Passes as the concert date approaches', () => {
-    const backstagePass = new Item('Backstage passes to a TAFKAL80ETC concert', 11, 20);
+    const backstagePass = new Item(ItemName.BackstagePasses, 11, 20);
     const gildedRose = new GildedRose([backstagePass]);
 
     gildedRose.updateQuality();
@@ -81,7 +85,7 @@ describe('Gilded Rose', () => {
 
 
   it('should not decrease the quality and sellIn of Sulfuras', () => {
-    const sulfuras = new Item('Sulfuras, Hand of Ragnaros', 10, 80);
+    const sulfuras = new Item(ItemName.Sulfuras, 10, 80);
     const gildedRose = new GildedRose([sulfuras]);
 
     gildedRose.updateQuality();
@@ -91,7 +95,7 @@ describe('Gilded Rose', () => {
   });
 
   it('should increase the quality of Aged Brie as it gets older', () => {
-    const agedBrie = new Item('Aged Brie', 10, 20);
+    const agedBrie = new Item(ItemName.AgedBrie, 10, 20);
     const gildedRose = new GildedRose([agedBrie]);
 
     gildedRose.updateQuality();
@@ -100,7 +104,7 @@ describe('Gilded Rose', () => {
   });
 
   it('should never increase the quality of an item above 50', () => {
-    const agedBrie = new Item('Aged Brie', 10, 50);
+    const agedBrie = new Item(ItemName.AgedBrie, 10, 50);
     const gildedRose = new GildedRose([agedBrie]);
 
     gildedRose.updateQuality();
