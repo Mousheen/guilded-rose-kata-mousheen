@@ -1,5 +1,5 @@
-import { Item } from "@/models/item";
-import { ItemName } from "@/models/itemName";
+import { Item } from "./models/item";
+import { ItemName } from "./models/itemName";
 
 export class GildedRose {
   items: Array<Item>;
