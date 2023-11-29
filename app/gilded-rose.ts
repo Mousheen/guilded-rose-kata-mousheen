@@ -16,6 +16,7 @@ enum ItemName {
   AgedBrie = 'Aged Brie',
   Sulfuras = 'Sulfuras, Hand of Ragnaros',
   BackstagePasses = 'Backstage passes to a TAFKAL80ETC concert',
+  Conjured = 'Conjured', // Assuming all conjured items share this exact name 
 }
 
 export class GildedRose {
@@ -47,19 +48,15 @@ export class GildedRose {
   }
 
   adjustQualityForItem(item: Item) {
-
-    // Conjured items degrade twice as fast after expiration
-    if (this.isConjuredItem(item)) {
-      this.decreaseQuality(item, 2);
-      return;
-    }
-
     switch (item.name) {
       case ItemName.AgedBrie:
         this.increaseQuality(item, 1);
         break;
       case ItemName.BackstagePasses:
         this.adjustBackstagePassQuality(item);
+        break;
+      case ItemName.Conjured:
+        this.decreaseQuality(item, 2);
         break;
       default:
         this.decreaseQuality(item, 1);
@@ -68,19 +65,15 @@ export class GildedRose {
   }
 
   adjustQualityForExpiredItem(item: Item) {
-
-    // Conjured items degrade twice as fast after expiration
-    if (this.isConjuredItem(item)) {
-      this.decreaseQuality(item, 4);
-      return;
-    }
-
     switch (item.name) {
       case ItemName.AgedBrie: 
         this.increaseQuality(item, 1);
         break;
       case ItemName.BackstagePasses:
         item.quality = 0;
+        break;
+      case ItemName.Conjured:
+        this.decreaseQuality(item, 4);
         break;
       default:
         this.decreaseQuality(item, 1);
@@ -110,9 +103,5 @@ export class GildedRose {
     if (item.sellIn < 6) {
       this.increaseQuality(item, 1);
     }
-  }
-
-  private isConjuredItem(item: Item): boolean {
-    return item.name.startsWith('Conjured');
   }
 }
