@@ -16,7 +16,6 @@ enum ItemName {
   AgedBrie = 'Aged Brie',
   Sulfuras = 'Sulfuras, Hand of Ragnaros',
   BackstagePasses = 'Backstage passes to a TAFKAL80ETC concert',
-  Conjured = 'Conjured', // Assuming all conjured items share this exact name 
 }
 
 export class GildedRose {
@@ -34,29 +33,34 @@ export class GildedRose {
   }
 
   updateItemQuality(item: Item) {
-    if (item.name ===  ItemName.Sulfuras) {
-      return; // Sulfurus does not change
+    if (item.name === ItemName.Sulfuras) {
+      return; // Sulfuras does not change
     }
 
-    this.adjustQualityForItem(item);
+    if (item.name !== ItemName.Sulfuras) {
+      if (item.sellIn <= 0) {
+        this.adjustQualityForExpiredItem(item);
+      } else {
+        this.adjustQualityForItem(item);
+      }
+    }
 
     item.sellIn--;
-
-    if (item.sellIn < 0) {
-      this.adjustQualityForExpiredItem(item);
-    }
   }
 
   adjustQualityForItem(item: Item) {
+    // Conjured items degrade twice as fast after expiration
+    if (this.isConjuredItem(item)) {
+      this.decreaseQuality(item, 2);
+      return;
+    }
+
     switch (item.name) {
       case ItemName.AgedBrie:
         this.increaseQuality(item, 1);
         break;
       case ItemName.BackstagePasses:
         this.adjustBackstagePassQuality(item);
-        break;
-      case ItemName.Conjured:
-        this.decreaseQuality(item, 2);
         break;
       default:
         this.decreaseQuality(item, 1);
@@ -65,15 +69,18 @@ export class GildedRose {
   }
 
   adjustQualityForExpiredItem(item: Item) {
+    // Conjured items degrade twice as fast after expiration
+    if (this.isConjuredItem(item)) {
+      this.decreaseQuality(item, 4);
+      return;
+    }
+
     switch (item.name) {
-      case ItemName.AgedBrie: 
+      case ItemName.AgedBrie:
         this.increaseQuality(item, 1);
         break;
       case ItemName.BackstagePasses:
         item.quality = 0;
-        break;
-      case ItemName.Conjured:
-        this.decreaseQuality(item, 4);
         break;
       default:
         this.decreaseQuality(item, 1);
@@ -103,5 +110,9 @@ export class GildedRose {
     if (item.sellIn < 6) {
       this.increaseQuality(item, 1);
     }
+  }
+
+  private isConjuredItem(item: Item): boolean {
+    return item.name.startsWith('Conjured');
   }
 }
